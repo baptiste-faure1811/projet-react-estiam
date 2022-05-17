@@ -4,29 +4,29 @@ import LoadingList from './LoadingList.js';
 import { PokemonListItem } from '../class/PokemonListItem.ts';
 
 class ListComponent extends React.Component {
+
+    url = "https://pokeapi.co/api/v2/pokemon?limit=";
+
     constructor(props) {
         super(props);
-        this.state = {isLoading: false};
-    }
-    toggleState = () => {
-        this.setState({ isLoading: !this.state.isLoading });
+        this.state = {
+            isLoading: true,
+            pokemons: []
+        };
     }
     
     componentDidMount() {
-        // 1.
+        fetch('http://localhost:3000/pokemons')
+            .then(response => response.json())
+            .then(data => {
+                let pokemonData = data.map((jsonObject) => {
+                    return new PokemonListItem(jsonObject.name.french, "url");
+                })
+                this.setState({ isLoading: false, pokemons: pokemonData });
+            });
     }
 
     render() {
-        const e = [
-            {
-                name: "klhj",
-                url: "ff"
-            },
-            {
-                name: "gsdfgdfsg",
-                url: "ggg"
-            }
-        ];
         if (this.state.isLoading === true) {
             return (
                 <div className='max-w-4xl mx-auto'>
@@ -34,13 +34,12 @@ class ListComponent extends React.Component {
                 </div>
               ); 
         } else {
-            var componentsArray = e.map((item, key) => {
-                return (<div><ListItem pokemonName={e.name} pokemonURL={e.url}/></div>);
+            var componentsArray = this.state.pokemons.map((pokemon) => {
+                return (<div><ListItem pokemonName={pokemon.name} pokemonURL={pokemon.url}/></div>);
             }) 
             return (
-                <div className='max-w-4xl mx-auto'>
+                <div className='max-w-4xl mx-auto mb-40'>
                     {componentsArray}
-                    <button onClick={this.toggleState}>d</button>
                 </div>
             );
         } 
