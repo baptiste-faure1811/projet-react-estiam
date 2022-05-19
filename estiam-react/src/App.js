@@ -1,23 +1,23 @@
 import './App.css';
+import Header from './components/Header';
 import ListComponent from "./components/ListComponent.js";
+import PokemonDetails from './components/PokemonDetails';
+import { BrowserRouter as Router, Switch, Route  } from "react-router-dom";
+import NewPokemon from './components/NewPokemon';
 
 function App(props) {
   return (
-    <div className="App">
-      <header className="App-header text-white flex flex-col justify-center mt-28 mb-10">
-
-        <p className="text-center font-bold text-5xl mb-3">PokéAPI</p>
-        <p className="text-center text-base mb-8">Project React • Baptiste FAURE • 2022</p>
-
-        <button className="mx-auto bg-green-600 text-white rounded-xl px-6 font-semibold text-lg py-2 hover:bg-green-800 hover:-translate-y-0.5 transition">
-          Ajouter un Pokemon
-        </button>
-      </header>
-
-      <ListComponent />
-
-
-    </div>
+      <div className="App max-w-4xl mx-auto">
+          <Header />
+          <Router>
+              <Switch>
+                <Route exact path="/"><ListComponent /></Route>
+                <Route exact path="/pokemon/:id"><PokemonDetails /></Route>
+                <Route exact path="/new-pokemon"><NewPokemon mode="create"/></Route>
+                <Route exact path="/edit-pokemon/:id"><NewPokemon mode="edit"/></Route>
+              </Switch>
+          </Router>
+      </div>
   );
 }
 
