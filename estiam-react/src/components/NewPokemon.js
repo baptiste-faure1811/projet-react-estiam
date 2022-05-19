@@ -14,6 +14,7 @@ class NewPokemon extends React.Component {
             spAttack: '',
             spDefense: '',
             speed: '',
+            imageFile: null,
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -33,6 +34,7 @@ class NewPokemon extends React.Component {
                     spAttack: data.base["Sp. Attack"],
                     spDefense: data.base["Sp. Defense"],
                     speed: data.base.Speed,
+                    imageFile: null,
                  });
             });
     }
@@ -64,14 +66,32 @@ class NewPokemon extends React.Component {
             case "speed":
                 this.setState({speed: event.target.value});
                 break;
+            case "image":
+                this.setState({imageFile: event.target.files[0]});
+                break;
             default:
                 break;
         }
     }
 
+    // uploadImage() {
+    //     let data = new FormData();
+    //     data.append('file', this.state.imageFile);
+
+    //     fetch('./', {
+    //         method: 'POST',
+    //         body: data
+    //     }).then(response => {
+    //         console.log(response);
+    //     }).catch(err => {
+    //         console.log("error" + err);
+    //     });
+    // }
+
     handleSubmit(event) {
         const id = this.props.match.params.id;
         if (this.props.mode == "create") {
+            // Créer un nouveau pokémon
             fetch('http://localhost:3000/pokemons',
             { 
                 headers: {
@@ -80,11 +100,11 @@ class NewPokemon extends React.Component {
                 },
                 method: "POST",
                 body: JSON.stringify(this.createJSON(this.state))
-            })
-            .then(function(res){  
+            }).then(function(res) {  
                 window.location.href = "/";
             })
         } else {
+            // Met à jour les données du Pokémon affiché
             fetch('http://localhost:3000/pokemons/' + id,
             { 
                 headers: {
@@ -144,7 +164,7 @@ class NewPokemon extends React.Component {
                     <input required type="text" name="name" placeholder="Nom du Pokémon" className="block py-2 px-4 rounded-lg col-span-2" value={this.state.name} onChange={this.handleChange}/>
                     <div className="flex flex-col justify-start items-stretch col-span-2">
                         <input required type="text" name="types" placeholder="Type du Pokémon" className="block py-2 px-4 rounded-lg" value={this.state.types.join(";")} onChange={this.handleChange}/>
-                        <p className="text-xs text-gray-300 mt-1 pl-2">Séparez les types par des points-virgules (max. 2).</p>
+                        <p className="text-xs text-gray-300 mt-2 pl-2">Séparez les types par des points-virgules (max. 2).</p>
                     </div>
                     <input required type="number" name="hp" placeholder="Health points" min="1" className="block py-2 px-4 rounded-lg" value={this.state.hp} onChange={this.handleChange}/>
                     <input required type="number" name="attack" placeholder="Attack points" min="1" className="block py-2 px-4 rounded-lg" value={this.state.attack} onChange={this.handleChange}/>
@@ -152,7 +172,20 @@ class NewPokemon extends React.Component {
                     <input required type="number" name="spAttack" placeholder="Sp. Attack" min="1" className="block py-2 px-4 rounded-lg" value={this.state.spAttack} onChange={this.handleChange}/>
                     <input required type="number" name="spDefense" placeholder="Sp. Defense" min="1" className="block py-2 px-4 rounded-lg" value={this.state.spDefense} onChange={this.handleChange}/>
                     <input required type="number" name="speed" placeholder="Speed" min="1" className="block py-2 px-4 rounded-lg" value={this.state.speed} onChange={this.handleChange}/>
-                    <div className="flex flex-col justify-center items-center col-span-4 mt-6">
+                    
+                    <div className="flex flex-col justify-start items-stretch col-span-2">
+                        <div className={this.props.mode == "create" ? "bg-white rounded-lg h-full col-span-2 py-2 px-4": "hidden"}>
+                            <label class="w-full h-full cursor-pointer block text-center flex flex-col justify-center items-center">
+                                <span class="text-center">Choisir une image</span>
+                                <input type='file' name="image" class="hidden w-full h-full" onChange={this.handleChange} accept="image/*"/>
+                            </label>
+                        </div>
+                        <p className="text-xs text-gray-300 mt-2 pl-2">Image sélectionnée: {this.state.imageFile == null ? "aucune" : this.state.imageFile.name}</p>
+                    </div>
+
+                    <p className={this.props.mode == "create" ? "hidden" : "col-span-4 text-center text-sm text-white mt-6"}>Par soucis de simplicité, il n'est possible de définir l'image d'un Pokémon que lors de sa création.</p>
+
+                    <div className={this.props.mode == "create" ? "flex flex-col justify-center items-center col-span-4 mt-6" : "flex flex-col justify-center items-center col-span-4"}>
                         <input type="submit" value={ this.props.mode == "create" ? "Valider" : "Enregistrer" } className="text-center bg-green-700 text-white rounded-xl px-6 font-semibold text-lg py-2 hover:bg-green-600 hover:-translate-y-0.5 transition"/>
                     </div>
                 </form>

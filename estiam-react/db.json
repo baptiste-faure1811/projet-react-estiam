@@ -16631,6 +16631,57 @@
         "Speed": "23"
       },
       "id": 812
+    },
+    {
+      "name": {
+        "english": "t"
+      },
+      "type": [
+        "t"
+      ],
+      "base": {
+        "HP": "1",
+        "Attack": "2",
+        "Defense": "2",
+        "Sp. Attack": "2",
+        "Sp. Defense": "3",
+        "Speed": "3"
+      },
+      "id": 813
+    },
+    {
+      "name": {
+        "english": "iuyt"
+      },
+      "type": [
+        "uiyt"
+      ],
+      "base": {
+        "HP": "4",
+        "Attack": "5",
+        "Defense": "5",
+        "Sp. Attack": "5",
+        "Sp. Defense": "5",
+        "Speed": "5"
+      },
+      "id": 814
+    },
+    {
+      "name": {
+        "english": "uyt"
+      },
+      "type": [
+        "65"
+      ],
+      "base": {
+        "HP": "65",
+        "Attack": "65",
+        "Defense": "65",
+        "Sp. Attack": "65",
+        "Sp. Defense": "65",
+        "Speed": "65"
+      },
+      "id": 816
     }
   ]
 }
